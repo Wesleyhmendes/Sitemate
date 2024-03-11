@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
-import UserService from '../service/user.service';
+import IssueService from '../service/user.service';
 import mapStatusHTTP from '../utils/mapStatusHTTP';
 
 export default class UserController {
   constructor(
-    private userService: UserService,
+    private issueService: IssueService,
   ) { }
 
   public async createIssue(req: Request, res: Response): Promise<Response> {
     try {
       const issue = req.body;
-      const createdIssue = await this.userService.createIssue(issue);
+      const createdIssue = await this.issueService.createIssue(issue);
       return res.status(201).json(createdIssue);
     } catch (error) {
       return res.status(500).json({ error: 'Internal Server Error' });
@@ -19,7 +19,7 @@ export default class UserController {
 
   public async getAllIssues(req: Request, res: Response): Promise<Response> {
     try {
-      const issues = await this.userService.getAllIssues();
+      const issues = await this.issueService.getAllIssues();
       return res.status(200).json(issues);
     } catch (error) {
       return res.status(500).json({ error: 'Internal Server Error' });
@@ -29,7 +29,7 @@ export default class UserController {
   public async getIssueById(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params;
-      const issue = await this.userService.getIssueById(Number(id));
+      const issue = await this.issueService.getIssueById(Number(id));
       if (!issue) {
         return res.status(404).json({ message: 'Issue not found' });
       }
@@ -42,7 +42,7 @@ export default class UserController {
   public async updateIssue(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params;
-      const updatedIssue = await this.userService.updateIssue(Number(id), req.body);
+      const updatedIssue = await this.issueService.updateIssue(Number(id), req.body);
       if (!updatedIssue) {
         return res.status(404).json({ message: 'Issue not found' });
       }
@@ -55,7 +55,7 @@ export default class UserController {
   public async deleteIssue(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params;
-      const deletedIssue = await this.userService.deleteIssue(Number(id));
+      const deletedIssue = await this.issueService.deleteIssue(Number(id));
       if (!deletedIssue) {
         return res.status(404).json({ message: 'Issue not found' });
       }
